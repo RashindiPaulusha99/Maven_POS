@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/FrontEnd_POS/FrontEnd_POS.iml" filepath="$PROJECT_DIR$/FrontEnd_POS/FrontEnd_POS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Maven_POS/Maven_POS.iml" filepath="$PROJECT_DIR$/Maven_POS/Maven_POS.iml" />
+    </modules>
+  </component>
+</project>

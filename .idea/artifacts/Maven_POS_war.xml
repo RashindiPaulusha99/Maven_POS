@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Maven_POS:war">
+    <output-path>$PROJECT_DIR$/Maven_POS/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>Maven_POS</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="Maven_POS-1.0.0.war">
+      <element id="artifact" artifact-name="Maven_POS:war exploded" />
+    </root>
+  </artifact>
+</component>

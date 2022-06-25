@@ -1,9 +1,8 @@
 package lk.ijse.spring.controller;
 
 import lk.ijse.spring.dto.CustomerDTO;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -12,11 +11,30 @@ import java.util.List;
 @CrossOrigin
 public class CustomerController {
 
-    public void saveCustomer(){
+    @PostMapping
+    public CustomerDTO saveCustomer(@ModelAttribute CustomerDTO cusDto){
+        return cusDto;
+    }
+
+    @GetMapping(path = "/{id}")
+    public CustomerDTO searchCustomer(@PathVariable String id){
+        CustomerDTO customerDTO = new CustomerDTO(id,"","","","","","");
+        return customerDTO;
+    }
+
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public CustomerDTO updateCustomer(@RequestBody CustomerDTO cusDto){
 
     }
-    /*public List<CustomerDTO> getAllCustomer(){
 
-    }*/
+    @DeleteMapping(params = {"id"})
+    public CustomerDTO deleteCustomer(@RequestParam String id){
+
+    }
+
+    @GetMapping
+    public List<CustomerDTO> getAllCustomer(){
+
+    }
 
 }

@@ -1,28 +1,38 @@
 package lk.ijse.spring.service.Impl;
 
+import lk.ijse.spring.dto.CustomerDTO;
 import lk.ijse.spring.entity.Customer;
 import lk.ijse.spring.repo.CustomerRepo;
 import lk.ijse.spring.service.CustomerService;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     CustomerRepo customerRepo;
 
-    public void saveCustomer(Customer customer) {
+    @Autowired
+    ModelMapper mapper;
+
+    public void saveCustomer(CustomerDTO customer) {
         if (!customerRepo.existsById(customer.getCusId())){
-            customerRepo.save(customer);
+            customerRepo.save(mapper.map(customer, Customer.class));
         }else {
             throw new RuntimeException(customer.getCusId() + " " + "Customer Already Exists..!");
         }
     }
 
-    public void updateCustomer(Customer customer) {
+    public void updateCustomer(CustomerDTO customer) {
         if (customerRepo.existsById(customer.getCusId())){
-            customerRepo.save(customer);
+            customerRepo.save(mapper.map(customer, Customer.class));
         }else {
             throw new RuntimeException(customer.getCusId() + " " + "No Such Customer..! Please Check The Correct Id..!");
         }
@@ -36,15 +46,18 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
-    public Customer searchCustomer(String id) {
+    public CustomerDTO searchCustomer(String id) {
         if (customerRepo.existsById(id)){
-            return customerRepo.findById(id).get();
+            Customer customer = customerRepo.findById(id).get();
+            return mapper.map(customer, CustomerDTO.class);
         }else {
             throw new RuntimeException(id + " " + "No Such Customer..! Please Check The Id..!");
         }
     }
 
-    public List<Customer> getAllCustomer() {
-        return customerRepo.findAll();
+    public List<CustomerDTO> getAllCustomer() {
+        List<Customer> all = customerRepo.findAll();
+        return mapper.map(all, new TypeToken<List<CustomerDTO>>(){
+        }.getType());
     }
 }

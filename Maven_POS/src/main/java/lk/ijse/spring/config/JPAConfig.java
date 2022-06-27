@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -33,19 +34,24 @@ public class JPAConfig {
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
         bean.setJpaVendorAdapter(va);
         bean.setDataSource(ds);
-        bean.setPackagesToScan(env.getRequiredProperty("entity.package"));
+        bean.setPackagesToScan(env.getRequiredProperty("package.name"));
         return bean;
     }
 
     @Bean
     public DataSource dataSource() throws NamingException {
-        return (DataSource) new JndiTemplate().lookup("java:comp/env/jdbc/pool");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setUrl(env.getRequiredProperty("my.app.url"));
+        dataSource.setUsername(env.getRequiredProperty("my.app.username"));
+        dataSource.setPassword(env.getRequiredProperty("my.app.password"));
+        dataSource.setDriverClassName(env.getRequiredProperty("my.app.driverClassName"));
+        return dataSource;
     }
 
     @Bean
     public JpaVendorAdapter jpaVendorAdapter(){
         HibernateJpaVendorAdapter vendor = new HibernateJpaVendorAdapter();
-        vendor.setDatabasePlatform(env.getRequiredProperty("databasePlatform.dialect"));
+        vendor.setDatabasePlatform(env.getRequiredProperty("my.app.databasePlatform"));
         vendor.setDatabase(Database.MYSQL);
         vendor.setShowSql(true);
         vendor.setGenerateDdl(true);

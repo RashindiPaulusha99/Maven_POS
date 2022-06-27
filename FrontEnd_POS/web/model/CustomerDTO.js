@@ -1,6 +1,6 @@
-function CustomerDTO(cusId, cusName, gender, contact, nic, address, email) {
-    var __id = cusId;
-    var __name = cusName;
+function CustomerDTO(customerId, customerName, gender, contact, nic, address, email) {
+    var __customerId = customerId;
+    var __customerName = customerName;
     var __gender = gender;
     var __contact = contact;
     var __nic = nic;
@@ -8,17 +8,17 @@ function CustomerDTO(cusId, cusName, gender, contact, nic, address, email) {
     var __email = email;
 
     this.setCustomerId = function (e) {
-        __id = e;
+        __customerId = e;
     }
     this.getCustomerId = function () {
-        return __id;
+        return __customerId;
     }
 
     this.setCustomerName = function (e) {
-        __name = e;
+        __customerName = e;
     }
     this.getCustomerName = function () {
-        return __name;
+        return __customerName;
     }
 
     this.setGender = function (e) {

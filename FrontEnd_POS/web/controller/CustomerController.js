@@ -175,13 +175,16 @@ function addCustomerToDB() {
         email: $("#email").val(),
     }
 
+    let data = $("#customerForm").serialize();
+    console.log(data);
+
     $.ajax({
-        url: "http://localhost:8080/backend/customer",
+        url: "http://localhost:8080/Maven_POS_war/customer",
         method: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(cusDetail),
+        //contentType: "application/json",
+        data: data,
         success: function (response) {
-            if (response.status == 200) {
+            /*if (response.status == 200) {
                 if (response.message == "Customer Successfully Added.") {
                     alert($("#customerId").val() + " " + response.message);
                 } else if (response.message == "Error") {
@@ -189,7 +192,8 @@ function addCustomerToDB() {
                 }
             } else if (response.status == "400") {
                 alert(response.data);
-            }
+            }*/
+            console.log(response);
             loadAllCustomer();
         },
         error: function (ob, statusText, error) {
@@ -202,18 +206,18 @@ function addCustomerToDB() {
 function loadAllCustomer() {
 
     $.ajax({
-        url: "http://localhost:8080/backend/customer?option=GETALL",
+        url: "http://localhost:8080/Maven_POS_war/customer",
         method: "GET",
         success: function (response) {
 
             $("#tblCustomer tbody").empty();
             for (var responseKey of response) {
-                let raw = `<tr><td> ${responseKey.id} </td><td> ${responseKey.name} </td><td> ${responseKey.gender} </td><td> ${responseKey.contact} </td><td> ${responseKey.nic} </td><td> ${responseKey.address} </td><td> ${responseKey.email} </td></tr>`;
+                let raw = `<tr><td> ${responseKey.customerId} </td><td> ${responseKey.customerName} </td><td> ${responseKey.gender} </td><td> ${responseKey.contact} </td><td> ${responseKey.nic} </td><td> ${responseKey.address} </td><td> ${responseKey.email} </td></tr>`;
                 $("#tblCustomer tbody").append(raw);
             }
             clear();
             clickEvent();
-            generateCustomerIds();
+            //generateCustomerIds();
         },
         error: function (ob, statusText, error) {
             alert(statusText);

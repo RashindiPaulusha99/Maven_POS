@@ -23,18 +23,18 @@ public class CustomerServiceImpl implements CustomerService {
     ModelMapper mapper;
 
     public void saveCustomer(CustomerDTO customer) {
-        if (!customerRepo.existsById(customer.getCusId())){
+        if (!customerRepo.existsById(customer.getCustomerId())){
             customerRepo.save(mapper.map(customer, Customer.class));
         }else {
-            throw new RuntimeException(customer.getCusId() + " " + "Customer Already Exists..!");
+            throw new RuntimeException(customer.getCustomerId() + " " + "Customer Already Exists..!");
         }
     }
 
     public void updateCustomer(CustomerDTO customer) {
-        if (customerRepo.existsById(customer.getCusId())){
+        if (customerRepo.existsById(customer.getCustomerId())){
             customerRepo.save(mapper.map(customer, Customer.class));
         }else {
-            throw new RuntimeException(customer.getCusId() + " " + "No Such Customer..! Please Check The Correct Id..!");
+            throw new RuntimeException(customer.getCustomerId() + " " + "No Such Customer..! Please Check The Correct Id..!");
         }
     }
 

@@ -60,4 +60,8 @@ public class CustomerServiceImpl implements CustomerService {
         return mapper.map(all, new TypeToken<List<CustomerDTO>>(){
         }.getType());
     }
+
+    public String generateCustomerIds(){
+        return customerRepo.generateCustomerId();
+    }
 }

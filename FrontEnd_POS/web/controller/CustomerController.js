@@ -111,11 +111,13 @@ $('#customerId,#nameOfCustomer,#gender,#contact,#nic,#address,#email').keydown(f
 function generateCustomerIds() {
     $("#customerId").val("C00-0001");
 
+    var test = "id";
+
     $.ajax({
-        url: "http://localhost:8080/Maven_POS_war/customer",
+        url: "http://localhost:8081/Maven_POS_war/customer?test="+test,
         method: "GET",
         success: function (response) {
-            var customerId = response.customerId;
+            var customerId = response;
             var tempId = parseInt(customerId.split("-")[1]);
             tempId = tempId + 1;
             if (tempId <= 9) {
@@ -168,7 +170,7 @@ function addCustomerToDB() {
     let data = $("#customerForm").serialize();
 
     $.ajax({
-        url: "http://localhost:8080/Maven_POS_war/customer",
+        url: "http://localhost:8081/Maven_POS_war/customer",
         method: "POST",
         data: data,
         success: function (response) {
@@ -193,7 +195,7 @@ function addCustomerToDB() {
 function loadAllCustomer() {
 
     $.ajax({
-        url: "http://localhost:8080/Maven_POS_war/customer",
+        url: "http://localhost:8081/Maven_POS_war/customer",
         method: "GET",
         success: function (response) {
 
@@ -204,7 +206,7 @@ function loadAllCustomer() {
             }
             clear();
             clickEvent();
-            //generateCustomerIds();
+            generateCustomerIds();
         },
         error: function (ob, statusText, error) {
             alert(statusText);
@@ -214,7 +216,8 @@ function loadAllCustomer() {
 }
 
 function clear() {
-    $("#customerId").val("");
+    generateCustomerIds();
+
     $("#nameOfCustomer").val("");
     $("#gender").val("");
     $("#contact").val("");
@@ -295,7 +298,7 @@ function deleteCustomer() {
     searchIfCustomerAlreadyExists();
 
     $.ajax({
-        url: "http://localhost:8080/Maven_POS_war/customer?id=" + $("#customerId").val(),
+        url: "http://localhost:8081/Maven_POS_war/customer?id=" + $("#customerId").val(),
         method: "DELETE",
         success: function (resp) {
             if (search == true) {
@@ -314,7 +317,7 @@ var search = false;
 
 function searchIfCustomerAlreadyExists() {
     $.ajax({
-        url: "http://localhost:8080/Maven_POS_war/customer?id=" + $("#customerId").val(),
+        url: "http://localhost:8081/Maven_POS_war/customer?id=" + $("#customerId").val(),
         method: "GET",
         success: function (response) {
             if (response.customerId == $("#customerId").val()) {
@@ -366,8 +369,8 @@ $("#btnEditCustomer").click(function () {
 function updateCustomer() {
 
     var cusDetail = {
-        id: $("#customerId").val(),
-        name: $("#nameOfCustomer").val(),
+        customerId: $("#customerId").val(),
+        customerName: $("#nameOfCustomer").val(),
         gender: $("#gender").val(),
         contact: $("#contact").val(),
         nic: $("#nic").val(),
@@ -376,7 +379,7 @@ function updateCustomer() {
     }
 
     $.ajax({
-        url: "http://localhost:8080/Maven_POS_war/customer",
+        url: "http://localhost:8081/Maven_POS_war/customer",
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(cusDetail),
@@ -388,7 +391,6 @@ function updateCustomer() {
             } else {
                 alert(response.data);
             }*/
-            console.log(response);
             loadAllCustomer();
         },
         error: function (ob, statusText, error) {
@@ -400,18 +402,17 @@ function updateCustomer() {
 
 $("#btnSearchCustomer").click(function () {
     $.ajax({
-        url: "http://localhost:8080/Maven_POS_war/customer/" + $("#searchCustomer").val(),
+        url: "http://localhost:8081/Maven_POS_war/customer/" + $("#searchCustomer").val(),
         method: "GET",
         success: function (response) {
-            $("#customerId").val(response.id);
-            $("#nameOfCustomer").val(response.name);
+            $("#customerId").val(response.customerId);
+            $("#nameOfCustomer").val(response.customerName);
             $("#gender").val(response.gender);
             $("#contact").val(response.contact);
             $("#nic").val(response.nic);
             $("#address").val(response.address);
             $("#email").val(response.email);
 
-            console.log(response);
         },
         error: function (ob, statusText, error) {
             alert("No Such Customer");

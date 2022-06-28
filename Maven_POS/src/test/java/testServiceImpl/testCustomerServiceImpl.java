@@ -27,4 +27,9 @@ public class testCustomerServiceImpl {
         System.out.println(customerDTO1);
     }
 
+    @Test
+    void getIds(){
+        System.out.println(customerService.generateCustomerIds());
+    }
+
 }

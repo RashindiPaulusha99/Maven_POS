@@ -19,7 +19,6 @@ public class CustomerController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public void saveCustomer(@ModelAttribute CustomerDTO cusDto){
         customerService.saveCustomer(cusDto);
-        //return customerService.saveCustomer(cusDto);
     }
 
     @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,12 +34,16 @@ public class CustomerController {
     @DeleteMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteCustomer(@RequestParam String id){
         customerService.deleteCustomer(id);
-        //return customerService.deleteCustomer(id);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CustomerDTO> getAllCustomer(){
         return customerService.getAllCustomer();
+    }
+
+    @GetMapping(params = {"test"})
+    public String generateCustomersIds(@RequestParam String test){
+        return customerService.generateCustomerIds();
     }
 
 }

@@ -5,7 +5,7 @@ var regExCusNIC = /^[0-9]{9}(v)$/;
 var regExCusAddress = /^[0-9A-Z a-z,/:]{4,50}$/;
 var regExCusEmail = /^[0-9A-Z a-z$&#]{3,10}(@gmail.com)|(@yahoo.com)$/;
 
-$("#customerId").prop('disabled', true);
+//$("#customerId").prop('disabled', true);
 
 $("#nameOfCustomer").keyup(function (event) {
 
@@ -112,7 +112,7 @@ function generateCustomerIds() {
     $("#customerId").val("C00-0001");
 
     $.ajax({
-        url: "http://localhost:8080/backend/customer?option=GETIDS",
+        url: "http://localhost:8080/Maven_POS_war/customer",
         method: "GET",
         success: function (response) {
             var customerId = response.customerId;
@@ -165,23 +165,11 @@ function addCustomer() {
 
 function addCustomerToDB() {
 
-    var cusDetail = {
-        id: $("#customerId").val(),
-        name: $("#nameOfCustomer").val(),
-        gender: $("#gender").val(),
-        contact: $("#contact").val(),
-        nic: $("#nic").val(),
-        address: $("#address").val(),
-        email: $("#email").val(),
-    }
-
     let data = $("#customerForm").serialize();
-    console.log(data);
-
+    
     $.ajax({
         url: "http://localhost:8080/Maven_POS_war/customer",
         method: "POST",
-        //contentType: "application/json",
         data: data,
         success: function (response) {
             /*if (response.status == 200) {
@@ -193,7 +181,6 @@ function addCustomerToDB() {
             } else if (response.status == "400") {
                 alert(response.data);
             }*/
-            console.log(response);
             loadAllCustomer();
         },
         error: function (ob, statusText, error) {
@@ -308,7 +295,7 @@ function deleteCustomer() {
     searchIfCustomerAlreadyExists();
 
     $.ajax({
-        url: "http://localhost:8080/backend/customer?cusId=" + $("#customerId").val(),
+        url: "http://localhost:8080/Maven_POS_war/customer?id=" + $("#customerId").val(),
         method: "DELETE",
         success: function (resp) {
             if (search == true) {
@@ -327,7 +314,7 @@ var search = false;
 
 function searchIfCustomerAlreadyExists() {
     $.ajax({
-        url: "http://localhost:8080/backend/customer?option=SEARCH&cusId=" + $("#customerId").val(),
+        url: "http://localhost:8080/Maven_POS_war/customer?id=" + $("#customerId").val(),
         method: "GET",
         success: function (response) {
             if (response.id == $("#customerId").val()) {
@@ -389,18 +376,19 @@ function updateCustomer() {
     }
 
     $.ajax({
-        url: "http://localhost:8080/backend/customer",
+        url: "http://localhost:8080/Maven_POS_war/customer",
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(cusDetail),
         success: function (response) {
-            if (response.status == 200) {
+            /*if (response.status == 200) {
                 alert($("#customerId").val() + " " + response.message);
             } else if (response.status == 400) {
                 alert(response.message);
             } else {
                 alert(response.data);
-            }
+            }*/
+            console.log(response);
             loadAllCustomer();
         },
         error: function (ob, statusText, error) {
@@ -412,7 +400,7 @@ function updateCustomer() {
 
 $("#btnSearchCustomer").click(function () {
     $.ajax({
-        url: "http://localhost:8080/backend/customer?option=SEARCH&cusId=" + $("#searchCustomer").val(),
+        url: "http://localhost:8080/Maven_POS_war/customer/" + $("#searchCustomer").val(),
         method: "GET",
         success: function (response) {
             $("#customerId").val(response.id);
@@ -422,6 +410,8 @@ $("#btnSearchCustomer").click(function () {
             $("#nic").val(response.nic);
             $("#address").val(response.address);
             $("#email").val(response.email);
+
+            console.log(response);
         },
         error: function (ob, statusText, error) {
             alert("No Such Customer");

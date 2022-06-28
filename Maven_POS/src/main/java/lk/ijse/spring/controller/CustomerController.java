@@ -17,24 +17,26 @@ public class CustomerController {
     CustomerService customerService;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public CustomerDTO saveCustomer(@ModelAttribute CustomerDTO cusDto){
-        System.out.println(cusDto);
-        return customerService.saveCustomer(cusDto);
+    public void saveCustomer(@ModelAttribute CustomerDTO cusDto){
+        customerService.saveCustomer(cusDto);
+        //return customerService.saveCustomer(cusDto);
     }
 
-    /*@GetMapping(path = "/{id}")
+    @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDTO searchCustomer(@PathVariable String id){
-        CustomerDTO customerDTO = new CustomerDTO(id,"","","","","","");
-        return customerDTO;
-    }*/
+        return customerService.searchCustomer(id);
+    }
 
-    /*@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public CustomerDTO updateCustomer(@RequestBody CustomerDTO cusDto){
-    }*/
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateCustomer(@RequestBody CustomerDTO cusDto){
+        customerService.updateCustomer(cusDto);
+    }
 
-    /*@DeleteMapping(params = {"id"})
-    public CustomerDTO deleteCustomer(@RequestParam String id){
-    }*/
+    @DeleteMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteCustomer(@RequestParam String id){
+        customerService.deleteCustomer(id);
+        //return customerService.deleteCustomer(id);
+    }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CustomerDTO> getAllCustomer(){

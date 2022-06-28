@@ -166,7 +166,7 @@ function addCustomer() {
 function addCustomerToDB() {
 
     let data = $("#customerForm").serialize();
-    
+
     $.ajax({
         url: "http://localhost:8080/Maven_POS_war/customer",
         method: "POST",
@@ -317,7 +317,7 @@ function searchIfCustomerAlreadyExists() {
         url: "http://localhost:8080/Maven_POS_war/customer?id=" + $("#customerId").val(),
         method: "GET",
         success: function (response) {
-            if (response.id == $("#customerId").val()) {
+            if (response.customerId == $("#customerId").val()) {
                 search = true;
             }
         },

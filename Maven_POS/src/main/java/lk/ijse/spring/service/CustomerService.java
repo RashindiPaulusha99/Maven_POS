@@ -5,7 +5,7 @@ import lk.ijse.spring.dto.CustomerDTO;
 import java.util.List;
 
 public interface CustomerService {
-    CustomerDTO saveCustomer(CustomerDTO customer);
+    void saveCustomer(CustomerDTO customer);
 
     void updateCustomer(CustomerDTO customer);
 

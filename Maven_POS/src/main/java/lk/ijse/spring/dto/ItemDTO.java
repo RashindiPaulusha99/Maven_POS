@@ -13,5 +13,6 @@ public class ItemDTO {
     private String itemCode;
     private String kind;
     private String itemName;
-    private int 
+    private int qtyOnHand;
+    private double unitPrice;
 }

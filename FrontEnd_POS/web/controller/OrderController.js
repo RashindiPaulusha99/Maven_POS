@@ -1,5 +1,5 @@
 function disableFields() {
-    $("#orderCusName").prop('disabled', true);
+    /*$("#orderCusName").prop('disabled', true);
     $("#orderId").prop('disabled', true);
     $("#orderCusContact").prop('disabled', true);
     $("#orderCusId").prop('disabled', true);
@@ -11,7 +11,7 @@ function disableFields() {
     $("#orderPrice").prop('disabled', true);
     $("#orderQty").prop('disabled', true);
     $("#gross").prop('disabled', true);
-    $("#net").prop('disabled', true);
+    $("#net").prop('disabled', true);*/
 }
 
 var now = new Date();

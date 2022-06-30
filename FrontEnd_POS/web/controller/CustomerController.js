@@ -5,8 +5,6 @@ var regExCusNIC = /^[0-9]{9}(v)$/;
 var regExCusAddress = /^[0-9A-Z a-z,/:]{4,50}$/;
 var regExCusEmail = /^[0-9A-Z a-z$&#]{3,10}(@gmail.com)|(@yahoo.com)$/;
 
-//$("#customerId").prop('disabled', true);
-
 $("#nameOfCustomer").keyup(function (event) {
 
     let name = $("#nameOfCustomer").val();
@@ -117,7 +115,7 @@ function generateCustomerIds() {
         url: "http://localhost:8081/Maven_POS_war/customer?test="+test,
         method: "GET",
         success: function (response) {
-            var customerId = response;
+            var customerId = response.data;
             var tempId = parseInt(customerId.split("-")[1]);
             tempId = tempId + 1;
             if (tempId <= 9) {
@@ -174,19 +172,13 @@ function addCustomerToDB() {
         method: "POST",
         data: data,
         success: function (response) {
-            /*if (response.status == 200) {
-                if (response.message == "Customer Successfully Added.") {
-                    alert($("#customerId").val() + " " + response.message);
-                } else if (response.message == "Error") {
-                    alert(response.data);
-                }
-            } else if (response.status == "400") {
-                alert(response.data);
-            }*/
+            if (response.code == 200){
+                alert($("#customerId").val() + " "+ response.message);
+            }
             loadAllCustomer();
         },
-        error: function (ob, statusText, error) {
-            alert(statusText);
+        error: function (ob) {
+            alert(ob.responseJSON.message);
             loadAllCustomer();
         }
     });
@@ -200,7 +192,7 @@ function loadAllCustomer() {
         success: function (response) {
 
             $("#tblCustomer tbody").empty();
-            for (var responseKey of response) {
+            for (var responseKey of response.data) {
                 let raw = `<tr><td> ${responseKey.customerId} </td><td> ${responseKey.customerName} </td><td> ${responseKey.gender} </td><td> ${responseKey.contact} </td><td> ${responseKey.nic} </td><td> ${responseKey.address} </td><td> ${responseKey.email} </td></tr>`;
                 $("#tblCustomer tbody").append(raw);
             }
@@ -208,8 +200,8 @@ function loadAllCustomer() {
             clickEvent();
             generateCustomerIds();
         },
-        error: function (ob, statusText, error) {
-            alert(statusText);
+        error: function (ob) {
+            alert(ob.responseJSON.message);
         }
     });
 
@@ -300,14 +292,14 @@ function deleteCustomer() {
     $.ajax({
         url: "http://localhost:8081/Maven_POS_war/customer?id=" + $("#customerId").val(),
         method: "DELETE",
-        success: function (resp) {
+        success: function (response) {
             if (search == true) {
-                alert($("#customerId").val() + " " + "Customer Successfully Deleted.");
+                alert($("#customerId").val() + " " + response.message);
                 loadAllCustomer();
             }
         },
-        error: function (ob, statusText, error) {
-            alert(statusText);
+        error: function (ob) {
+            alert(ob.responseJSON.message);
             loadAllCustomer();
         }
     });
@@ -324,7 +316,7 @@ function searchIfCustomerAlreadyExists() {
                 search = true;
             }
         },
-        error: function (ob, statusText, error) {
+        error: function (ob) {
             search = false;
             alert("No Such Customer");
             loadAllCustomer();
@@ -384,17 +376,13 @@ function updateCustomer() {
         contentType: "application/json",
         data: JSON.stringify(cusDetail),
         success: function (response) {
-            /*if (response.status == 200) {
+            if (response.code == 200) {
                 alert($("#customerId").val() + " " + response.message);
-            } else if (response.status == 400) {
-                alert(response.message);
-            } else {
-                alert(response.data);
-            }*/
+            }
             loadAllCustomer();
         },
-        error: function (ob, statusText, error) {
-            alert(statusText);
+        error: function (ob) {
+            alert(ob.responseJSON.message);
             loadAllCustomer();
         }
     });
@@ -405,16 +393,15 @@ $("#btnSearchCustomer").click(function () {
         url: "http://localhost:8081/Maven_POS_war/customer/" + $("#searchCustomer").val(),
         method: "GET",
         success: function (response) {
-            $("#customerId").val(response.customerId);
-            $("#nameOfCustomer").val(response.customerName);
-            $("#gender").val(response.gender);
-            $("#contact").val(response.contact);
-            $("#nic").val(response.nic);
-            $("#address").val(response.address);
-            $("#email").val(response.email);
-
+            $("#customerId").val(response.data.customerId);
+            $("#nameOfCustomer").val(response.data.customerName);
+            $("#gender").val(response.data.gender);
+            $("#contact").val(response.data.contact);
+            $("#nic").val(response.data.nic);
+            $("#address").val(response.data.address);
+            $("#email").val(response.data.email);
         },
-        error: function (ob, statusText, error) {
+        error: function (ob) {
             alert("No Such Customer");
             loadAllCustomer();
         }

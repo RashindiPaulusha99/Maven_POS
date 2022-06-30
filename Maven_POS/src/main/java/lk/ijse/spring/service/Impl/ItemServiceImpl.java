@@ -1,8 +1,6 @@
 package lk.ijse.spring.service.Impl;
 
-import lk.ijse.spring.dto.CustomerDTO;
 import lk.ijse.spring.dto.ItemDTO;
-import lk.ijse.spring.entity.Customer;
 import lk.ijse.spring.entity.Item;
 import lk.ijse.spring.repo.ItemRepo;
 import lk.ijse.spring.service.ItemService;

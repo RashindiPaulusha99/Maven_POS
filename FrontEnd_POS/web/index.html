@@ -345,13 +345,13 @@
 
         <!--input fields-->
         <div class="row">
-            <form>
+            <form id="itemForm">
                 <!-- 3 column grid layout with text inputs for code and name and kind-->
                 <div class="form row ">
                     <div class="col">
                         <div class="form-outline ">
                             <label class="form-label text-black mt-1" for="itemCode">Item Code</label>
-                            <input type="text" id="itemCode" class="form-control mt-0 mb-0 rounded rounded-pill shadow" placeholder="I00-xxx" />
+                            <input type="text" id="itemCode" class="form-control mt-0 mb-0 rounded rounded-pill shadow" placeholder="I00-xxx" name="itemCode"/>
                             <p><small id="errorCode" class="text-danger pl-1 mt-0 mb-0"></small></p>
                         </div>
                     </div>
@@ -359,7 +359,7 @@
                     <div class="col">
                         <div class="form-outline">
                             <label class="form-label text-black mt-1" for="kind">Kind</label>
-                            <input type="text" id="kind" class="form-control mt-0 mb-0 rounded rounded-pill shadow" placeholder="xxxx" />
+                            <input type="text" id="kind" class="form-control mt-0 mb-0 rounded rounded-pill shadow" placeholder="xxxx" name="kind"/>
                             <p><small id="errorKind" class="text-danger pl-1 mt-0 mb-0"></small></p>
                         </div>
                     </div>
@@ -367,7 +367,7 @@
                     <div class="col">
                         <div class="form-outline">
                             <label class="form-label text-black mt-1" for="nameOfItem">Item Name</label>
-                            <input type="text" id="nameOfItem" class="form-control  mt-0 mb-0 rounded rounded-pill shadow" placeholder="xxxxx" />
+                            <input type="text" id="nameOfItem" class="form-control  mt-0 mb-0 rounded rounded-pill shadow" placeholder="xxxxx" name="itemName"/>
                             <p><small id="errorItemName" class="text-danger pl-1 mt-0 mb-0"></small></p>
                         </div>
                     </div>
@@ -379,7 +379,7 @@
                         <!-- Qty -->
                         <div class="form-outline">
                             <label class="form-label text-black mt-0" for="qty">Quantity</label>
-                            <input type="text" id="qty" class="form-control rounded rounded-pill shadow mt-0 mb-0" placeholder="xx" />
+                            <input type="text" id="qty" class="form-control rounded rounded-pill shadow mt-0 mb-0" placeholder="xx" name="qtyOnHand"/>
                             <p><small id="errorQty" class="text-danger pl-1 mt-0 mb-0"></small></p>
                         </div>
                     </div>
@@ -388,7 +388,7 @@
                         <!-- Price -->
                         <div class="form-outline">
                             <label class="form-label text-black mt-0" for="unitPrice">Unit Price</label>
-                            <input type="text" id="unitPrice" class="form-control rounded rounded-pill shadow mt-0 mb-0" placeholder="00.00" />
+                            <input type="text" id="unitPrice" class="form-control rounded rounded-pill shadow mt-0 mb-0" placeholder="00.00" name="unitPrice"/>
                             <p><small id="errorPrice" class="text-danger pl-1 mt-0 mb-0"></small></p>
                         </div>
 

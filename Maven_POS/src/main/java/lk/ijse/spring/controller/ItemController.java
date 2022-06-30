@@ -39,7 +39,7 @@ public class ItemController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseUtil getAllItem(){
+    public ResponseUtil getAllItems(){
         return new ResponseUtil(200, "Ok", itemService.getAllItems());
     }
 

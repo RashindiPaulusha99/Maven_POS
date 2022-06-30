@@ -5,16 +5,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @ToString
+@Entity
 public class Item {
-    private String customerId;
-    private String customerName;
-    private String gender;
-    private String contact;
-    private String nic;
-    private String address;
-    private String email;
+    @Id
+    private String itemCode;
+    private String kind;
+    private String itemName;
+    private int qtyOnHand;
+    private double unitPrice;
 }

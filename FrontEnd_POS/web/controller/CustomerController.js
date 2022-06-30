@@ -293,7 +293,8 @@ function deleteCustomer() {
         url: "http://localhost:8081/Maven_POS_war/customer?id=" + $("#customerId").val(),
         method: "DELETE",
         success: function (response) {
-            if (search == true) {
+            console.log(search);
+            if (search == true && response.code == 200) {
                 alert($("#customerId").val() + " " + response.message);
                 loadAllCustomer();
             }
@@ -309,10 +310,10 @@ var search = false;
 
 function searchIfCustomerAlreadyExists() {
     $.ajax({
-        url: "http://localhost:8081/Maven_POS_war/customer?id=" + $("#customerId").val(),
+        url: "http://localhost:8081/Maven_POS_war/customer/" + $("#customerId").val(),
         method: "GET",
         success: function (response) {
-            if (response.customerId == $("#customerId").val()) {
+            if (response.data.customerId == $("#customerId").val()) {
                 search = true;
             }
         },

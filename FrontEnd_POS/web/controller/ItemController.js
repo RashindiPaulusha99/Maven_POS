@@ -3,8 +3,6 @@ var regExItemName = /^[A-Z|a-z\s]{3,20}$/;
 var regExQuantity = /^[0-9]{2,20}$/;
 var regExUnitPrice = /^[0-9]{1,10}(.)[0-9]{2}$/;
 
-$("#itemCode").prop('disabled', true);
-
 $("#kind").keyup(function (event) {
 
     let kind = $("#kind").val();
@@ -78,11 +76,13 @@ $('#itemCode,#kind,#nameOfItem,#qty,#unitPrice').keydown(function (e) {
 function generateItemCodes() {
     $("#itemCode").val("I00-0001");
 
+    var test = "id";
+
     $.ajax({
-        url: "http://localhost:8080/backend/item?option=GETIDS",
+        url: "http://localhost:8081/Maven_POS_war/item?test="+test,
         method: "GET",
         success: function (response) {
-            var itemCode = response.itemCode;
+            var itemCode = response.data;
             var tempId = parseInt(itemCode.split("-")[1]);
             tempId = tempId + 1;
             if (tempId <= 9) {
@@ -131,33 +131,21 @@ function saveItem() {
 }
 
 function addItemToDB() {
-    var itemDetails = {
-        code: $("#itemCode").val(),
-        kind: $("#kind").val(),
-        itemName: $("#nameOfItem").val(),
-        qtyOnHand: $("#qty").val(),
-        unitPrice: $("#unitPrice").val()
-    }
+
+    let data = $("#itemForm").serialize();
 
     $.ajax({
-        url: "http://localhost:8080/backend/item",
+        url: "http://localhost:8081/Maven_POS_war/item",
         method: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(itemDetails),
+        data: data,
         success: function (response) {
-            if (response.status == 200) {
-                if (response.message == "Item Successfully Added.") {
-                    alert($("#itemCode").val() + " " + response.message);
-                } else if (response.message == "Error") {
-                    alert(response.data);
-                }
-            } else if (response.status == "400") {
-                alert(response.data);
+            if (response.code == 200){
+                alert($("#itemCode").val() + " "+ response.message);
             }
             loadItemDetails();
         },
-        error: function (ob, statusText, error) {
-            alert(statusText);
+        error: function (ob) {
+            alert(ob.responseJSON.message);
             loadItemDetails();
         }
     });
@@ -165,21 +153,21 @@ function addItemToDB() {
 
 function loadItemDetails() {
     $.ajax({
-        url: "http://localhost:8080/backend/item?option=GETALL",
+        url: "http://localhost:8081/Maven_POS_war/item",
         method: "GET",
         success: function (response) {
 
             $("#tblItem tbody").empty();
-            for (var responseKey of response) {
-                let raw = `<tr><td> ${responseKey.code} </td><td> ${responseKey.kind} </td><td> ${responseKey.itemName} </td><td> ${responseKey.qtyOnHand} </td><td> ${responseKey.unitPrice} </td></tr>`;
+            for (var responseKey of response.data) {
+                let raw = `<tr><td> ${responseKey.itemCode} </td><td> ${responseKey.kind} </td><td> ${responseKey.itemName} </td><td> ${responseKey.qtyOnHand} </td><td> ${responseKey.unitPrice} </td></tr>`;
                 $("#tblItem tbody").append(raw);
             }
             clearItems();
             clickEventForItem();
             generateItemCodes();
         },
-        error: function (ob, statusText, error) {
-            alert(statusText);
+        error: function (ob) {
+            alert(ob.responseJSON.message);
         }
     });
 }
@@ -257,16 +245,16 @@ function deleteItem() {
     searchIfItemAlreadyExists();
 
     $.ajax({
-        url: "http://localhost:8080/backend/item?itemCode=" + $("#itemCode").val(),
+        url: "http://localhost:8081/Maven_POS_war/item?id=" + $("#itemCode").val(),
         method: "DELETE",
-        success: function (resp) {
-            if (search == true) {
-                alert($("#itemCode").val() + " " + "Item Successfully Deleted.");
+        success: function (response) {
+            if (search == true && response.code == 200) {
+                alert($("#itemCode").val() + " " + response.message);
                 loadItemDetails();
             }
         },
-        error: function (ob, statusText, error) {
-            alert(statusText);
+        error: function (ob) {
+            alert(ob.responseJSON.message);
             loadItemDetails();
         }
     });
@@ -276,16 +264,16 @@ var search = false;
 
 function searchIfItemAlreadyExists() {
     $.ajax({
-        url: "http://localhost:8080/backend/item?option=SEARCH&itemCode=" + $("#itemCode").val(),
+        url: "http://localhost:8081/Maven_POS_war/item/" + $("#itemCode").val(),
         method: "GET",
         success: function (response) {
-            if (response.code == $("#itemCode").val()) {
+            if (response.data.itemCode == $("#itemCode").val()) {
                 search = true;
             }
         },
-        error: function (ob, statusText, error) {
+        error: function (ob) {
             search = false;
-            alert("No Such Item");
+            alert(ob.responseJSON.message);
             loadItemDetails();
         }
     });
@@ -324,8 +312,9 @@ $("#btnEditItem").click(function () {
 });
 
 function updateItem() {
+
     var itemDetails = {
-        code: $("#itemCode").val(),
+        itemCode: $("#itemCode").val(),
         kind: $("#kind").val(),
         itemName: $("#nameOfItem").val(),
         qtyOnHand: $("#qty").val(),
@@ -333,23 +322,18 @@ function updateItem() {
     }
 
     $.ajax({
-        url: "http://localhost:8080/backend/item",
+        url: "http://localhost:8081/Maven_POS_war/item",
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(itemDetails),
         success: function (response) {
-            console.log(response);
-            if (response.status == 200) {
+            if (response.code == 200) {
                 alert($("#itemCode").val() + " " + response.message);
-            } else if (response.status == 400) {
-                alert(response.message);
-            } else {
-                alert(response.data);
             }
             loadItemDetails();
         },
-        error: function (ob, statusText, error) {
-            alert(statusText);
+        error: function (ob) {
+            alert(ob.responseJSON.message);
             loadItemDetails();
         }
     });
@@ -357,17 +341,17 @@ function updateItem() {
 
 $("#btnSearchItem").click(function () {
     $.ajax({
-        url: "http://localhost:8080/backend/item?option=SEARCH&itemCode=" + $("#searchItem").val(),
+        url: "http://localhost:8081/Maven_POS_war/item/" + $("#searchItem").val(),
         method: "GET",
         success: function (response) {
-            $("#itemCode").val(response.code);
-            $("#nameOfItem").val(response.itemName);
-            $("#kind").val(response.kind);
-            $("#qty").val(response.qtyOnHand);
-            $("#unitPrice").val(response.unitPrice);
+            $("#itemCode").val(response.data.itemCode);
+            $("#nameOfItem").val(response.data.itemName);
+            $("#kind").val(response.data.kind);
+            $("#qty").val(response.data.qtyOnHand);
+            $("#unitPrice").val(response.data.unitPrice);
         },
-        error: function (ob, statusText, error) {
-            alert("No Such Item");
+        error: function (ob) {
+            alert(ob.responseJSON.message);
             loadItemDetails();
         }
     });
@@ -375,4 +359,9 @@ $("#btnSearchItem").click(function () {
 
 $("#btnViewItem").click(function () {
     loadItemDetails();
+});
+
+$("#btnNew").click(function () {
+    clearItems();
+    generateItemCodes();
 });

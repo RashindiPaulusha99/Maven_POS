@@ -93,7 +93,7 @@ $("#btnSearchOrder").click(function () {
 
 function searchOrder(oid) {
     $.ajax({
-        url: "http://localhost:8080/backend/purchaseOrder?option=SEARCH&orderId=" + oid,
+        url: "http://localhost:8081/Maven_POS_war/order/" + oid,
         method: "GET",
         success: function (response) {
             $("#orderCusId").val(response.cusId);
@@ -104,7 +104,7 @@ function searchOrder(oid) {
 
             searchCustomerDetail(response.cusId);
         },
-        error: function (ob, statusText, error) {
+        error: function (ob) {
             alert("No Such Order");
         }
     });
@@ -112,17 +112,17 @@ function searchOrder(oid) {
 
 function searchCustomerDetail(cusId) {
     $.ajax({
-        url: "http://localhost:8080/backend/customer?option=SEARCH&cusId=" + cusId,
+        url: "http://localhost:8081/Maven_POS_war/customer/" + cusId,
         method: "GET",
         success: function (response) {
-            $("#orderCusId").val(response.id);
-            $("#orderCusName").val(response.name);
-            $("#orderCusAddress").val(response.address);
-            $("#orderCusContact").val(response.contact);
-            $("#orderCusNIC").val(response.nic);
+            $("#orderCusId").val(responsedata.data.customerId);
+            $("#orderCusName").val(response.data.customerName);
+            $("#orderCusAddress").val(response.data.address);
+            $("#orderCusContact").val(response.data.contact);
+            $("#orderCusNIC").val(response.data.nic);
         },
-        error: function (ob, statusText, error) {
-            alert("No Such Customer");
+        error: function (ob) {
+            alert(ob.responseJSON.message);
         }
     });
 }
@@ -470,12 +470,12 @@ function clickRow() {
 
 function updateQtyOnHandWhenClickRow(code, sellqty) {
     $.ajax({
-        url: "http://localhost:8080/backend/item?option=SEARCH&itemCode=" + code,
+        url: "http://localhost:8081/Maven_POS_war/item/" + code,
         method: "GET",
         success: function (response) {
-            $("#orderQty").val((response.qtyOnHand - sellqty));
+            $("#orderQty").val((response.data.qtyOnHand - sellqty));
         },
-        error: function (ob, statusText, error) {
+        error: function (ob) {
         }
     });
 }

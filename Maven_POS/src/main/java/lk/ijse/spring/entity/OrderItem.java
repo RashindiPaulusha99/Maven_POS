@@ -13,6 +13,6 @@ import java.io.Serializable;
 @ToString
 public class OrderItem implements Serializable {
 
-    private String oId;
+    private String orderId;
     private String itemId;
 }

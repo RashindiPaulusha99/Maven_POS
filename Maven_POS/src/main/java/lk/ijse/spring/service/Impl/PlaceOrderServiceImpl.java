@@ -1,9 +1,8 @@
 package lk.ijse.spring.service.Impl;
 
 import lk.ijse.spring.dto.OrderDTO;
-import lk.ijse.spring.dto.OrderDetailsDTO;
 import lk.ijse.spring.entity.Item;
-import lk.ijse.spring.entity.Order;
+import lk.ijse.spring.entity.Orders;
 import lk.ijse.spring.entity.OrderDetail;
 import lk.ijse.spring.repo.ItemRepo;
 import lk.ijse.spring.repo.OrderDetailRepo;
@@ -15,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -38,23 +35,17 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
 
     @Override
     public void placeOrder(OrderDTO orderDTO) {
-        System.out.println(orderDTO+"   service");
 
-        ArrayList<OrderDetailsDTO> orderDetails = (ArrayList<OrderDetailsDTO>) orderDTO.getOrderDetails();
-        orderDTO.setOrderDetails(orderDetails);
-
-        Order order = modelMapper.map(orderDTO, Order.class);
+        Orders order = modelMapper.map(orderDTO, Orders.class);
         if (!orderRepo.existsById(orderDTO.getOrderId())){
 
             if (orderDTO.getOrderDetails().size() < 1){
                 throw new RuntimeException("No Items In Order..!");
             }else {
-                System.out.println(order);
                 orderRepo.save(order);
 
                 for (OrderDetail orderDetail : order.getOrderDetails()) {
                     System.out.println(orderDetail);
-                    orderDetailRepo.save(orderDetail);
                     Item item = itemRepo.findById(orderDetail.getItemId()).get();
                     item.setQtyOnHand(item.getQtyOnHand() - orderDetail.getSellQty());
                     itemRepo.save(item);
@@ -83,7 +74,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
     @Override
     public OrderDTO searchOrder(String oid) {
         if (orderRepo.existsById(oid)){
-            Order order = orderRepo.findById(oid).get();
+            Orders order = orderRepo.findById(oid).get();
             return modelMapper.map(order, OrderDTO.class);
         }else {
             throw new RuntimeException(oid + " " + "No Such Order..! Please Check The OrderId..!");
@@ -92,13 +83,15 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
 
     @Override
     public List<OrderDTO> getAllOrders() {
-        List<Order> all = orderRepo.findAll();
+        List<Orders> all = orderRepo.findAll();
         return modelMapper.map(all, new TypeToken<List<OrderDTO>>(){
         }.getType());
     }
 
     @Override
     public String generateOrderId() {
+        System.out.println("eee");
+        System.out.println(orderRepo.generateOrderId());
         return orderRepo.generateOrderId();
     }
 }

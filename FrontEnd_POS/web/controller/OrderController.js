@@ -26,6 +26,7 @@ function generateOrderId() {
     $("#orderId").val("O00-0001");
 
     var test = "id";
+    console.log(test);
 
     $.ajax({
         url: "http://localhost:8081/Maven_POS_war/order?test="+ test,
@@ -89,7 +90,7 @@ $("#btnSearchOrder").click(function () {
     $("#tblOrder tbody tr").empty();
     var oid = $.trim($("#searchOrder").val());
     searchOrder(oid);
-    searchOrderDetails(oid);
+    //searchOrderDetails(oid);
 });
 
 function searchOrder(oid) {
@@ -97,13 +98,19 @@ function searchOrder(oid) {
         url: "http://localhost:8081/Maven_POS_war/order/" + oid,
         method: "GET",
         success: function (response) {
-            $("#orderCusId").val(response.cusId);
-            $("#orderId").val(response.orderId);
-            $("#orderDate").val(response.orderDate);
-            $("#net").val(response.grossTotal);
-            $("#gross").val(response.netTotal);
+            $("#orderCusId").val(response.data.customer.customerId);
+            $("#orderId").val(response.data.orderId);
+            $("#orderDate").val(response.data.orderDate);
+            $("#net").val(response.data.grossTotal);
+            $("#gross").val(response.data.netTotal);
 
-            searchCustomerDetail(response.cusId);
+            $("#tblOrder tbody").empty()
+            for (var oDetails of response.data.orderDetails) {
+                let raw = `<tr><td> ${oDetails.itemId} </td><td> ${oDetails.itemKind} </td><td> ${oDetails.itemName} </td><td> ${oDetails.sellQty} </td><td> ${oDetails.unitPrice} </td><td> ${oDetails.itemDiscount} </td><td> ${oDetails.total} </td><td> <input id='btnEdit' class='btn btn-success btn-sm' value='Update' style="width: 75px"/> </td><td> <input id='btnDelete' class='btn btn-danger btn-sm' value='Delete' style="width: 75px"/> </td></tr>`;
+                $("#tblOrder tbody").append(raw);
+            }
+
+            searchCustomerDetail(response.data.customer.customerId);
         },
         error: function (ob) {
             alert("No Such Order");
@@ -541,8 +548,8 @@ $("#btnPurchase").click(function () {
 
         if (confirm(text) == true) {
 
-            searchOrderIdForPurchase();
-
+            //searchOrderIdForPurchase();
+            findCustomerDetails();
             manageBalance();
 
         } else if (confirm(text) == false) {
@@ -575,6 +582,8 @@ function searchOrderIdForPurchase() {
         success: function (response) {
             if (response.data.orderId == $("#orderId").val()){
                 alert("Something Wrong.");
+            }else if (response.data.orderId != $("#orderId").val()){
+                findCustomerDetails();
             }
         },
         error: function (ob, statusText, error) {
@@ -609,24 +618,24 @@ function addDataToOrderDB(customer) {
     let details = new Array();
     for (var i = 0; i < $("#tblOrder tbody tr").length; i++) {
         var orderDetail = {
-            oId: $("#orderId").val(),
             itemId: $("#tblOrder tbody tr").children(':nth-child(1)')[i].innerText,
+            orderId: $("#orderId").val(),
+            itemDiscount: $("#tblOrder tbody tr").children(':nth-child(6)')[i].innerText,
             itemKind: $("#tblOrder tbody tr").children(':nth-child(2)')[i].innerText,
             itemName: $("#tblOrder tbody tr").children(':nth-child(3)')[i].innerText,
             sellQty: $("#tblOrder tbody tr").children(':nth-child(4)')[i].innerText,
-            unitPrice: $("#tblOrder tbody tr").children(':nth-child(5)')[i].innerText,
-            itemDiscount: $("#tblOrder tbody tr").children(':nth-child(6)')[i].innerText,
-            total: $("#tblOrder tbody tr").children(':nth-child(7)')[i].innerText
+            total: $("#tblOrder tbody tr").children(':nth-child(7)')[i].innerText,
+            unitPrice: $("#tblOrder tbody tr").children(':nth-child(5)')[i].innerText
         }
         details.push(orderDetail);
     }
 
     var order={
         orderId:$("#orderId").val(),
-        customer:customer,
-        orderDate:$("#orderDate").val(),
         grossTotal:$("#gross").val(),
         netTotal:$("#net").val(),
+        orderDate:$("#orderDate").val(),
+        customer:customer,
         orderDetails:details
     }
 

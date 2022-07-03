@@ -32,6 +32,7 @@ function generateOrderId() {
         method: "GET",
         success: function (response) {
             var orderId = response.data;
+            console.log(orderId);
             var tempId = parseInt(orderId.split("-")[1]);
             tempId = tempId + 1;
             if (tempId <= 9) {
@@ -640,6 +641,7 @@ function addDataToOrderDB(customer) {
             alert($("#orderId").val() + " "+response.message);
         },
         error:function (ob) {
+            console.log(ob.responseJSON.message);
             alert(ob.responseJSON.message);
         }
     });

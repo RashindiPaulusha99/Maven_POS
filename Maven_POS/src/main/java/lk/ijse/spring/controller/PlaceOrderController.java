@@ -27,6 +27,7 @@ public class PlaceOrderController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil saveOrder(@RequestBody OrderDTO orderDTO){
         System.out.println(orderDTO+"   controller");
+        System.out.println(orderDTO.getOrderDetails());
         placeOrderService.placeOrder(orderDTO);
         return new ResponseUtil(200, "Successfully Purchased Order.",null);
     }

@@ -1,6 +1,7 @@
 package lk.ijse.spring.service.Impl;
 
 import lk.ijse.spring.dto.OrderDTO;
+import lk.ijse.spring.dto.OrderDetailsDTO;
 import lk.ijse.spring.entity.Item;
 import lk.ijse.spring.entity.Order;
 import lk.ijse.spring.entity.OrderDetail;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +39,10 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
     @Override
     public void placeOrder(OrderDTO orderDTO) {
         System.out.println(orderDTO+"   service");
+
+        ArrayList<OrderDetailsDTO> orderDetails = (ArrayList<OrderDetailsDTO>) orderDTO.getOrderDetails();
+        orderDTO.setOrderDetails(orderDetails);
+
         Order order = modelMapper.map(orderDTO, Order.class);
         if (!orderRepo.existsById(orderDTO.getOrderId())){
 
@@ -48,7 +54,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
 
                 for (OrderDetail orderDetail : order.getOrderDetails()) {
                     System.out.println(orderDetail);
-                    //orderDetailRepo.save(orderDetail);
+                    orderDetailRepo.save(orderDetail);
                     Item item = itemRepo.findById(orderDetail.getItemId()).get();
                     item.setQtyOnHand(item.getQtyOnHand() - orderDetail.getSellQty());
                     itemRepo.save(item);

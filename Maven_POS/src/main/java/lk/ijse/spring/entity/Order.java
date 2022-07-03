@@ -7,6 +7,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @AllArgsConstructor
@@ -25,6 +27,7 @@ public class Order {
     @ManyToOne(cascade = {CascadeType.REFRESH,CascadeType.DETACH})
     @JoinColumn(name = "cusId", referencedColumnName = "customerId", nullable = false)
     private Customer customer;
+
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetails;

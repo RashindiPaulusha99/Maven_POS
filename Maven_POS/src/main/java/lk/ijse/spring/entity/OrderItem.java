@@ -5,11 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @ToString
-public class OrderItem {
+public class OrderItem implements Serializable {
 
     private String oId;
     private String itemId;

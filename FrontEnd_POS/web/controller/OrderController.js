@@ -25,11 +25,13 @@ function generateOrderId() {
 
     $("#orderId").val("O00-0001");
 
+    var test = "id";
+
     $.ajax({
-        url: "http://localhost:8080/backend/purchaseOrder?option=GETIDS",
+        url: "http://localhost:8081/Maven_POS_war/order?test="+ test,
         method: "GET",
         success: function (response) {
-            var orderId = response.orderId;
+            var orderId = response.data;
             var tempId = parseInt(orderId.split("-")[1]);
             tempId = tempId + 1;
             if (tempId <= 9) {
@@ -42,8 +44,7 @@ function generateOrderId() {
                 $("#orderId").val("O00-" + tempId);
             }
         },
-        error: function (ob, statusText, error) {
-
+        error: function (ob) {
         }
     });
 
@@ -137,7 +138,7 @@ function searchOrderDetails(oid) {
                 $("#tblOrder tbody").append(raw);
             }
         },
-        error: function (ob, statusText, error) {
+        error: function (ob) {
             alert("No Such Order Details.");
         }
     });
@@ -152,31 +153,31 @@ function loadCustomerIds() {
     var countCustomerIds = 1;
 
     $.ajax({
-        url: "http://localhost:8080/backend/customer?option=GETALL",
+        url: "http://localhost:8081/Maven_POS_war/customer",
         method: "GET",
         success: function (response) {
-            for (var ids of response) {
-                $("#ids").append($("<option></option>").attr("value", countCustomerIds).text(ids.id));
+            for (var ids of response.data) {
+                $("#ids").append($("<option></option>").attr("value", countCustomerIds).text(ids.customerId));
                 countCustomerIds++;
             }
         },
-        error: function (ob, statusText, error) {
+        error: function (ob) {
         }
     });
 }
 
 $("#ids").click(function () {
     $.ajax({
-        url: "http://localhost:8080/backend/customer?option=SEARCH&cusId=" + $("#ids option:selected").text(),
+        url: "http://localhost:8081/Maven_POS_war/customer/" + $("#ids option:selected").text(),
         method: "GET",
         success: function (response) {
-            $("#orderCusName").val(response.name);
-            $("#orderCusId").val(response.id);
-            $("#orderCusContact").val(response.contact);
-            $("#orderCusNIC").val(response.nic);
-            $("#orderCusAddress").val(response.address);
+            $("#orderCusName").val(response.data.customerName);
+            $("#orderCusId").val(response.data.customerId);
+            $("#orderCusContact").val(response.data.contact);
+            $("#orderCusNIC").val(response.data.nic);
+            $("#orderCusAddress").val(response.data.address);
         },
-        error: function (ob, statusText, error) {
+        error: function (ob) {
         }
     });
 });
@@ -193,15 +194,15 @@ function loadItemCodes() {
     var countItemCodes = 1;
 
     $.ajax({
-        url: "http://localhost:8080/backend/item?option=GETALL",
+        url: "http://localhost:8081/Maven_POS_war/item",
         method: "GET",
         success: function (response) {
-            for (var codes of response) {
-                $("#codes").append($("<option></option>").attr("value", countItemCodes).text(codes.code));
+            for (var codes of response.data) {
+                $("#codes").append($("<option></option>").attr("value", countItemCodes).text(codes.itemCode));
                 countItemCodes++;
             }
         },
-        error: function (ob, statusText, error) {
+        error: function (ob) {
         }
     });
 }
@@ -212,28 +213,28 @@ $("#codes").click(function () {
 
 function clickCodes(code) {
     $.ajax({
-        url: "http://localhost:8080/backend/item?option=SEARCH&itemCode=" + code,
+        url: "http://localhost:8081/Maven_POS_war/item/" + code,
         method: "GET",
         success: function (response) {
-            $("#orderItemCode").val(response.code);
-            $("#orderKind").val(response.kind);
-            $("#orderItemName").val(response.itemName);
+            $("#orderItemCode").val(response.data.itemCode);
+            $("#orderKind").val(response.data.kind);
+            $("#orderItemName").val(response.data.itemName);
 
             if ($("#tblOrder tbody tr").length == 0){
-                $("#orderQty").val(response.qtyOnHand);
+                $("#orderQty").val(response.data.qtyOnHand);
             }else {
                 for (var i = 0; i < $("#tblOrder tbody tr").length; i++) {
                     if ($("#tblOrder tbody tr").children(':nth-child(1)')[i].innerText == code){
-                        $("#orderQty").val(response.qtyOnHand - parseInt($("#tblOrder tbody tr").children(':nth-child(4)')[i].innerText))
+                        $("#orderQty").val(response.data.qtyOnHand - parseInt($("#tblOrder tbody tr").children(':nth-child(4)')[i].innerText))
                     }else {
-                        $("#orderQty").val(response.qtyOnHand);
+                        $("#orderQty").val(response.data.qtyOnHand);
                     }
                 }
             }
 
-            $("#orderPrice").val(response.unitPrice);
+            $("#orderPrice").val(response.data.unitPrice);
         },
-        error: function (ob, statusText, error) {
+        error: function (ob) {
         }
     });
 }

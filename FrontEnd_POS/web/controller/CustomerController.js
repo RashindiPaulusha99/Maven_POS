@@ -128,7 +128,7 @@ function generateCustomerIds() {
                 $("#customerId").val("C00-" + tempId);
             }
         },
-        error: function (ob, statusText, error) {
+        error: function (ob) {
         }
 
     });

@@ -1,7 +1,9 @@
 package lk.ijse.spring.service.Impl;
 
 import lk.ijse.spring.dto.OrderDTO;
+import lk.ijse.spring.entity.Item;
 import lk.ijse.spring.entity.Order;
+import lk.ijse.spring.entity.OrderDetail;
 import lk.ijse.spring.repo.ItemRepo;
 import lk.ijse.spring.repo.OrderDetailRepo;
 import lk.ijse.spring.repo.OrderRepo;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -33,7 +36,28 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
 
     @Override
     public void placeOrder(OrderDTO orderDTO) {
+        System.out.println(orderDTO+"   service");
+        Order order = modelMapper.map(orderDTO, Order.class);
+        if (!orderRepo.existsById(orderDTO.getOrderId())){
 
+            if (orderDTO.getOrderDetails().size() < 1){
+                throw new RuntimeException("No Items In Order..!");
+            }else {
+                System.out.println(order);
+                orderRepo.save(order);
+
+                for (OrderDetail orderDetail : order.getOrderDetails()) {
+                    System.out.println(orderDetail);
+                    //orderDetailRepo.save(orderDetail);
+                    Item item = itemRepo.findById(orderDetail.getItemId()).get();
+                    item.setQtyOnHand(item.getQtyOnHand() - orderDetail.getSellQty());
+                    itemRepo.save(item);
+                }
+            }
+
+        }else {
+            throw  new RuntimeException(orderDTO.getOrderId()+" "+"Order Already Exist..!");
+        }
     }
 
     @Override

@@ -18,7 +18,7 @@ public class CustomerController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil saveCustomer(@ModelAttribute CustomerDTO cusDto){
         customerService.saveCustomer(cusDto);
-        return new ResponseUtil(200, "Customer Saved.",null);
+        return new ResponseUtil(200, "Successfully Customer Saved.",null);
     }
 
     @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -29,13 +29,13 @@ public class CustomerController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil updateCustomer(@RequestBody CustomerDTO cusDto){
         customerService.updateCustomer(cusDto);
-        return new ResponseUtil(200, "Customer Updated.",null);
+        return new ResponseUtil(200, "Successfully Customer Updated.",null);
     }
 
     @DeleteMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil deleteCustomer(@RequestParam String id){
         customerService.deleteCustomer(id);
-        return new ResponseUtil(200, "Customer Deleted.", null);
+        return new ResponseUtil(200, "Successfully Customer Deleted.", null);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

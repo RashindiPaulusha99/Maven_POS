@@ -569,18 +569,41 @@ function manageBalance() {
 
 function searchOrderIdForPurchase() {
     $.ajax({
-        url: "http://localhost:8080/backend/purchaseOrder?option=SEARCH&orderId=" + $("#orderId").val(),
+        url: "http://localhost:8081/Maven_POS_war/order/" + $("#orderId").val(),
         method: "GET",
         success: function (response) {
-            alert("Something Wrong.");
+            if (response.data.orderId == $("#orderId").val()){
+                alert("Something Wrong.");
+            }
         },
         error: function (ob, statusText, error) {
-            addDataToOrderDB();
+            findCustomerDetails();
         }
     });
 }
 
-function addDataToOrderDB() {
+function findCustomerDetails() {
+    $.ajax({
+        url:"http://localhost:8081/Maven_POS_war/customer/" + $("#ids option:selected").text(),
+        method: "GET",
+        success: function (response) {
+            var customer={
+                customerId:response.data.customerId,
+                customerName:response.data.customerName,
+                gender:response.data.gender,
+                contact:response.data.contact,
+                nic:response.data.nic,
+                address:response.data.address,
+                email:response.data.email,
+            }
+            addDataToOrderDB(customer);
+        },
+        error: function (ob) {
+        }
+    });
+}
+
+function addDataToOrderDB(customer) {
 
     let details = new Array();
     for (var i = 0; i < $("#tblOrder tbody tr").length; i++) {
@@ -599,32 +622,25 @@ function addDataToOrderDB() {
 
     var order={
         orderId:$("#orderId").val(),
+        customer:customer,
         orderDate:$("#orderDate").val(),
-        cusId:$("#orderCusId").val(),
         grossTotal:$("#gross").val(),
         netTotal:$("#net").val(),
-        items:details
+        orderDetails:details
     }
 
+    console.log(order);
+
     $.ajax({
-        url:"http://localhost:8080/backend/purchaseOrder?",
+        url:"http://localhost:8081/Maven_POS_war/order",
         method:"POST",
         contentType:"application/json",
         data: JSON.stringify(order),
         success:function (response) {
-            if (response.status == 200){
-                if (response.message == "Successfully Purchased Order."){
-                    alert(response.message);
-
-                }else if (response.message == "Error"){
-                    alert(response.data);
-                }
-            }else if (response.status == "400"){
-                alert(response.data);
-            }
+            alert($("#orderId").val() + " "+response.message);
         },
-        error:function (ob , statusText , error) {
-            alert(statusText);
+        error:function (ob) {
+            alert(ob.responseJSON.message);
         }
     });
 }

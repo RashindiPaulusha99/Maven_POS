@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -20,5 +21,5 @@ public class OrderDTO {
     private LocalDate orderDate;
     private double grossTotal;
     private double netTotal;
-    List<OrderDetailsDTO> orderDetails;
+    ArrayList<OrderDetailsDTO> orderDetails;
 }

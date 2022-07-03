@@ -18,7 +18,7 @@ public class ItemController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil saveItem(@ModelAttribute ItemDTO itemDTO){
         itemService.saveItem(itemDTO);
-        return new ResponseUtil(200, "Item Saved.",null);
+        return new ResponseUtil(200, "Successfully Item Saved.",null);
     }
 
     @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -29,13 +29,13 @@ public class ItemController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil updateItem(@RequestBody ItemDTO itemDTO){
         itemService.updateItem(itemDTO);
-        return new ResponseUtil(200, "Item Updated.",null);
+        return new ResponseUtil(200, "Successfully Item Updated.",null);
     }
 
     @DeleteMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil deleteItem(@RequestParam String id){
         itemService.deleteItem(id);
-        return new ResponseUtil(200, "Item Deleted.", null);
+        return new ResponseUtil(200, "Successfully Item Deleted.", null);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

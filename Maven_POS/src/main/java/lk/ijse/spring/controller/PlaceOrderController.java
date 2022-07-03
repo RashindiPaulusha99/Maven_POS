@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("order")
 @CrossOrigin
-public class OrderController {
+public class PlaceOrderController {
 
 }

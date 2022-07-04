@@ -4,6 +4,7 @@ import lk.ijse.spring.dto.OrderDTO;
 import lk.ijse.spring.service.PlaceOrderService;
 import lk.ijse.spring.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +21,9 @@ public class PlaceOrderController {
         return new ResponseUtil(200,"Ok",placeOrderService.getAllOrders());
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil saveOrder(@RequestBody OrderDTO orderDTO){
-        System.out.println(orderDTO);
         placeOrderService.placeOrder(orderDTO);
         return new ResponseUtil(200, "Successfully Purchased Order.",null);
     }
@@ -46,8 +47,6 @@ public class PlaceOrderController {
 
     @GetMapping(params = {"test"})
     public ResponseUtil generateOrderId(@RequestParam String test) {
-        System.out.println("rrr");
-        System.out.println(placeOrderService.generateOrderId());
         return new ResponseUtil(200, "Ok", placeOrderService.generateOrderId());
     }
 

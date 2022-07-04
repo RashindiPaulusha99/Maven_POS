@@ -7,13 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ToString
 public class OrderDTO {
     private String orderId;
     private CustomerDTO customer;
@@ -23,4 +21,15 @@ public class OrderDTO {
     private double netTotal;
 
     List<OrderDetailsDTO> orderDetails;
+
+    @Override
+    public String toString() {
+        return "OrderDTO{" +
+                "orderId='" + orderId + '\'' +
+                ", customer=" + customer +
+                ", orderDate=" + orderDate +
+                ", grossTotal=" + grossTotal +
+                ", netTotal=" + netTotal +
+                '}';
+    }
 }

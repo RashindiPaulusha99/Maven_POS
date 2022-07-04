@@ -45,8 +45,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
                 orderRepo.save(order);
 
                 for (OrderDetail orderDetail : order.getOrderDetails()) {
-                    System.out.println(orderDetail);
-                    Item item = itemRepo.findById(orderDetail.getItemId()).get();
+                    Item item = itemRepo.findById(orderDetail.getItemCode()).get();
                     item.setQtyOnHand(item.getQtyOnHand() - orderDetail.getSellQty());
                     itemRepo.save(item);
                 }
@@ -90,8 +89,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
 
     @Override
     public String generateOrderId() {
-        System.out.println("eee");
-        System.out.println(orderRepo.generateOrderId());
         return orderRepo.generateOrderId();
     }
 }

@@ -1,5 +1,5 @@
 function disableFields() {
-    /*$("#orderCusName").prop('disabled', true);
+    $("#orderCusName").prop('disabled', true);
     $("#orderId").prop('disabled', true);
     $("#orderCusContact").prop('disabled', true);
     $("#orderCusId").prop('disabled', true);
@@ -11,7 +11,7 @@ function disableFields() {
     $("#orderPrice").prop('disabled', true);
     $("#orderQty").prop('disabled', true);
     $("#gross").prop('disabled', true);
-    $("#net").prop('disabled', true);*/
+    $("#net").prop('disabled', true);
 }
 
 var now = new Date();
@@ -26,7 +26,6 @@ function generateOrderId() {
     $("#orderId").val("O00-0001");
 
     var test = "id";
-    console.log(test);
 
     $.ajax({
         url: "http://localhost:8081/Maven_POS_war/order?test="+ test,
@@ -106,7 +105,7 @@ function searchOrder(oid) {
 
             $("#tblOrder tbody").empty()
             for (var oDetails of response.data.orderDetails) {
-                let raw = `<tr><td> ${oDetails.itemId} </td><td> ${oDetails.itemKind} </td><td> ${oDetails.itemName} </td><td> ${oDetails.sellQty} </td><td> ${oDetails.unitPrice} </td><td> ${oDetails.itemDiscount} </td><td> ${oDetails.total} </td><td> <input id='btnEdit' class='btn btn-success btn-sm' value='Update' style="width: 75px"/> </td><td> <input id='btnDelete' class='btn btn-danger btn-sm' value='Delete' style="width: 75px"/> </td></tr>`;
+                let raw = `<tr><td> ${oDetails.itemCode} </td><td> ${oDetails.itemKind} </td><td> ${oDetails.itemName} </td><td> ${oDetails.sellQty} </td><td> ${oDetails.unitPrice} </td><td> ${oDetails.itemDiscount} </td><td> ${oDetails.total} </td><td> <input id='btnEdit' class='btn btn-success btn-sm' value='Update' style="width: 75px"/> </td><td> <input id='btnDelete' class='btn btn-danger btn-sm' value='Delete' style="width: 75px"/> </td></tr>`;
                 $("#tblOrder tbody").append(raw);
             }
 
@@ -548,13 +547,11 @@ $("#btnPurchase").click(function () {
 
         if (confirm(text) == true) {
 
-            //searchOrderIdForPurchase();
             findCustomerDetails();
             manageBalance();
 
         } else if (confirm(text) == false) {
 
-            generateOrderId();
             netAmount = 0;
             grossAmount = 0;
 
@@ -573,23 +570,6 @@ function manageBalance() {
     $("#balance").val(balance);
 
     $("#btnAddCart").attr('disabled', false);
-}
-
-function searchOrderIdForPurchase() {
-    $.ajax({
-        url: "http://localhost:8081/Maven_POS_war/order/" + $("#orderId").val(),
-        method: "GET",
-        success: function (response) {
-            if (response.data.orderId == $("#orderId").val()){
-                alert("Something Wrong.");
-            }else if (response.data.orderId != $("#orderId").val()){
-                findCustomerDetails();
-            }
-        },
-        error: function (ob, statusText, error) {
-            findCustomerDetails();
-        }
-    });
 }
 
 function findCustomerDetails() {
@@ -615,10 +595,10 @@ function findCustomerDetails() {
 
 function addDataToOrderDB(customer) {
 
-    let details = new Array();
+    var details = new Array();
     for (var i = 0; i < $("#tblOrder tbody tr").length; i++) {
         var orderDetail = {
-            itemId: $("#tblOrder tbody tr").children(':nth-child(1)')[i].innerText,
+            itemCode: $("#tblOrder tbody tr").children(':nth-child(1)')[i].innerText,
             orderId: $("#orderId").val(),
             itemDiscount: $("#tblOrder tbody tr").children(':nth-child(6)')[i].innerText,
             itemKind: $("#tblOrder tbody tr").children(':nth-child(2)')[i].innerText,
@@ -639,8 +619,6 @@ function addDataToOrderDB(customer) {
         orderDetails:details
     }
 
-    console.log(order);
-
     $.ajax({
         url:"http://localhost:8081/Maven_POS_war/order",
         method:"POST",
@@ -648,15 +626,16 @@ function addDataToOrderDB(customer) {
         data: JSON.stringify(order),
         success:function (response) {
             alert($("#orderId").val() + " "+response.message);
+            clearAll();
         },
         error:function (ob) {
-            console.log(ob.responseJSON.message);
             alert(ob.responseJSON.message);
         }
     });
 }
 
 function clearAll() {
+    generateOrderId();
 
     $("#orderItemName").val("");
     $("#orderItemCode").val("");

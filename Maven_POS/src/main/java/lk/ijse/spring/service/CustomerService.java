@@ -16,4 +16,6 @@ public interface CustomerService {
     List<CustomerDTO>  getAllCustomer();
 
     String generateCustomerIds();
+
+    int countIds();
 }

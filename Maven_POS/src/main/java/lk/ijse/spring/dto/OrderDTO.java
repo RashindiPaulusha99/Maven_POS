@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+
 public class OrderDTO {
     private String orderId;
     private CustomerDTO customer;
@@ -22,14 +23,4 @@ public class OrderDTO {
 
     List<OrderDetailsDTO> orderDetails;
 
-    @Override
-    public String toString() {
-        return "OrderDTO{" +
-                "orderId='" + orderId + '\'' +
-                ", customer=" + customer +
-                ", orderDate=" + orderDate +
-                ", grossTotal=" + grossTotal +
-                ", netTotal=" + netTotal +
-                '}';
-    }
 }

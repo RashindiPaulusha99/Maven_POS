@@ -74,6 +74,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
     public OrderDTO searchOrder(String oid) {
         if (orderRepo.existsById(oid)){
             Orders order = orderRepo.findById(oid).get();
+            System.out.println(order);
             return modelMapper.map(order, OrderDTO.class);
         }else {
             throw new RuntimeException(oid + " " + "No Such Order..! Please Check The OrderId..!");
@@ -90,5 +91,15 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
     @Override
     public String generateOrderId() {
         return orderRepo.generateOrderId();
+    }
+
+    @Override
+    public int countOrders() {
+        return orderRepo.countOrders();
+    }
+
+    @Override
+    public double calculateIncome() {
+        return orderRepo.calculateIncome();
     }
 }

@@ -4,6 +4,7 @@ import lk.ijse.spring.dto.CustomerDTO;
 import lk.ijse.spring.service.CustomerService;
 import lk.ijse.spring.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,11 @@ public class CustomerController {
     @GetMapping(params = {"test"})
     public ResponseUtil generateCustomersIds(@RequestParam String test) {
         return new ResponseUtil(200, "Ok", customerService.generateCustomerIds());
+    }
 
+    @GetMapping(path ="/COUNT/{count}")
+    public ResponseUtil countCustomers(@PathVariable String count){
+        return new ResponseUtil(200, "Ök", customerService.countIds());
     }
 
 }

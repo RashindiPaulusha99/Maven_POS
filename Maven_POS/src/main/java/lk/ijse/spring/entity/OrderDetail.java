@@ -3,12 +3,14 @@ package lk.ijse.spring.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString
 @Entity
 @IdClass(OrderItem.class)
 public class OrderDetail {
@@ -32,18 +34,4 @@ public class OrderDetail {
     @JoinColumn(name = "itemCode", referencedColumnName = "itemCode",insertable = false,updatable = false)
     private Item item;
 
-    @Override
-    public String toString() {
-        return "OrderDetail{" +
-                "orderId='" + orderId + '\'' +
-                ", itemCode='" + itemCode + '\'' +
-                ", itemKind='" + itemKind + '\'' +
-                ", itemName='" + itemName + '\'' +
-                ", sellQty=" + sellQty +
-                ", unitPrice=" + unitPrice +
-                ", itemDiscount=" + itemDiscount +
-                ", total=" + total +
-                ", item=" + item +
-                '}';
-    }
 }

@@ -13,32 +13,38 @@ $("#btnSearchOrders").click(function () {
     var oid = $.trim($("#searchOrderId").val());
 
     searchORDER(oid);
-    searchDetailsForOrder(oid);
+    //searchDetailsForOrder(oid);
 
 });
 
 function searchORDER(oid) {
     $.ajax({
-        url: "http://localhost:8080/backend/purchaseOrder?option=SEARCH&orderId=" + oid,
+        url: "http://localhost:8081/Maven_POS_war/order/" + oid,
         method: "GET",
         success: function (response) {
-            $("#cusId").val(response.cusId);
-            $("#OID").val(response.orderId);
-            $("#ODate").val(response.orderDate);
-            $("#grossAmount").val(response.grossTotal);
-            $("#netAmount").val(response.netTotal);
+            $("#cusId").val(response.data.customer.customerId);
+            $("#OID").val(response.data.orderId);
+            $("#ODate").val(response.data.orderDate);
+            $("#grossAmount").val(response.data.grossTotal);
+            $("#netAmount").val(response.data.netTotal);
+
+            $("#tblOrderDetail tbody").empty()
+            for (var oDetails of response.data.orderDetails) {
+                let raw = `<tr><td> ${oDetails.itemCode} </td><td> ${oDetails.itemKind} </td><td> ${oDetails.itemName} </td><td> ${oDetails.sellQty} </td><td> ${oDetails.unitPrice} </td><td> ${oDetails.itemDiscount} </td><td> ${oDetails.total} </td></tr>`;
+                $("#tblOrderDetail tbody").append(raw);
+            }
 
             searchItemQty(oid);
         },
-        error: function (ob, statusText, error) {
-            alert("No Such Order");
+        error: function (ob) {
+            alert(ob.responseJSON.message);
         }
     });
 }
 
 function searchItemQty(oid) {
     $.ajax({
-        url: "http://localhost:8080/backend/purchaseOrder?option=COUNTQTY&orderId=" + oid,
+        url: "http://localhost:8081/Maven_POS_war/order/" + oid,
         method: "GET",
         success: function (response) {
             $("#itemQty").val(response);
@@ -51,7 +57,7 @@ function searchItemQty(oid) {
 
 function searchDetailsForOrder(oid) {
     $.ajax({
-        url: "http://localhost:8080/backend/purchaseOrder?option=SEARCHDETAILS&orderId=" + oid,
+        url: "http://localhost:8081/Maven_POS_war/order/" + oid,
         method: "GET",
         success: function (response) {
             $("#tblOrderDetail tbody").empty()

@@ -16,4 +16,6 @@ public interface ItemService {
     List<ItemDTO> getAllItems();
 
     String generateItemCode();
+
+    int countCodes();
 }

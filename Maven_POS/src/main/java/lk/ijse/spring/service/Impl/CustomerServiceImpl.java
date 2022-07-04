@@ -64,4 +64,8 @@ public class CustomerServiceImpl implements CustomerService {
     public String generateCustomerIds(){
         return customerRepo.generateCustomerId();
     }
+
+    public int countIds() {
+        return customerRepo.countCustomers();
+    }
 }

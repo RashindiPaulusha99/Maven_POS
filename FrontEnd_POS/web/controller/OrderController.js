@@ -1,5 +1,5 @@
 function disableFields() {
-    $("#orderCusName").prop('disabled', true);
+    /*$("#orderCusName").prop('disabled', true);
     $("#orderId").prop('disabled', true);
     $("#orderCusContact").prop('disabled', true);
     $("#orderCusId").prop('disabled', true);
@@ -11,7 +11,7 @@ function disableFields() {
     $("#orderPrice").prop('disabled', true);
     $("#orderQty").prop('disabled', true);
     $("#gross").prop('disabled', true);
-    $("#net").prop('disabled', true);
+    $("#net").prop('disabled', true);*/
 }
 
 var now = new Date();
@@ -32,7 +32,6 @@ function generateOrderId() {
         method: "GET",
         success: function (response) {
             var orderId = response.data;
-            console.log(orderId);
             var tempId = parseInt(orderId.split("-")[1]);
             tempId = tempId + 1;
             if (tempId <= 9) {
@@ -97,11 +96,13 @@ function searchOrder(oid) {
         url: "http://localhost:8081/Maven_POS_war/order/" + oid,
         method: "GET",
         success: function (response) {
+            console.log("came")
+            console.log(response.data);
             $("#orderCusId").val(response.data.customer.customerId);
             $("#orderId").val(response.data.orderId);
             $("#orderDate").val(response.data.orderDate);
-            $("#net").val(response.data.grossTotal);
-            $("#gross").val(response.data.netTotal);
+            $("#net").val(response.data.netTotal);
+            $("#gross").val(response.data.grossTotal);
 
             $("#tblOrder tbody").empty()
             for (var oDetails of response.data.orderDetails) {
@@ -112,7 +113,8 @@ function searchOrder(oid) {
             searchCustomerDetail(response.data.customer.customerId);
         },
         error: function (ob) {
-            alert("No Such Order");
+            console.log(ob.responseJSON.message);
+            alert(ob.responseJSON.message);
         }
     });
 }
@@ -122,7 +124,7 @@ function searchCustomerDetail(cusId) {
         url: "http://localhost:8081/Maven_POS_war/customer/" + cusId,
         method: "GET",
         success: function (response) {
-            $("#orderCusId").val(responsedata.data.customerId);
+            $("#orderCusId").val(response.data.customerId);
             $("#orderCusName").val(response.data.customerName);
             $("#orderCusAddress").val(response.data.address);
             $("#orderCusContact").val(response.data.contact);

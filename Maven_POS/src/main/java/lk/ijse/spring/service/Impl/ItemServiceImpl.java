@@ -68,7 +68,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public String generateItemCode() {
-
         return itemRepo.generateItemCode();
+    }
+
+    @Override
+    public int countCodes() {
+        return itemRepo.countCodes();
     }
 }

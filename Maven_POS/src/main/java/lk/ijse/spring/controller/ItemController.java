@@ -48,4 +48,9 @@ public class ItemController {
         return new ResponseUtil(200, "Ok", itemService.generateItemCode());
     }
 
+    @GetMapping(path ="/COUNT/{count}")
+    public ResponseUtil countCodes(@PathVariable String count){
+        return new ResponseUtil(200, "Ök", itemService.countCodes());
+    }
+
 }

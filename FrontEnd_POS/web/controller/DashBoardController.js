@@ -17,48 +17,48 @@ function count() {
 
 function countCustomers() {
     $.ajax({
-        url:"http://localhost:8080/backend/customer?option=COUNT",
+        url:"http://localhost:8081/Maven_POS_war/customer/COUNT/count?"+"count",
         method:"GET",
         success:function (response) {
-            $("#customerCount").text(response);
+            $("#customerCount").text(response.data);
         },
-        error:function (ob, statusText, error) {
+        error:function () {
         }
     });
 }
 
 function countItems() {
     $.ajax({
-        url:"http://localhost:8080/backend/item?option=COUNT",
+        url:"http://localhost:8081/Maven_POS_war/item/COUNT/count?"+"count",
         method:"GET",
         success:function (response) {
-            $("#itemCount").text(response);
+            $("#itemCount").text(response.data);
         },
-        error:function (ob, statusText, error) {
+        error:function () {
         }
     });
 }
 
 function countOrders() {
     $.ajax({
-        url:"http://localhost:8080/backend/purchaseOrder?option=COUNT",
+        url:"http://localhost:8081/Maven_POS_war/order/COUNT/count?"+"count",
         method:"GET",
         success:function (response) {
-            $("#orderCount").text(response);
+            $("#orderCount").text(response.data);
         },
-        error:function (ob, statusText, error) {
+        error:function () {
         }
     });
 }
 
 function income(){
     $.ajax({
-        url:"http://localhost:8080/backend/purchaseOrder?option=TOTAL",
+        url:"http://localhost:8081/Maven_POS_war/order/INCOME/income?"+"income",
         method:"GET",
         success:function (response) {
-            $("#income").text(response+"/=");
+            $("#income").text(response.data+"/=");
         },
-        error:function (ob, statusText, error) {
+        error:function () {
         }
     });
 }

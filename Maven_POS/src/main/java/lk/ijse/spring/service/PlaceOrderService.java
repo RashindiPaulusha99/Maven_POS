@@ -11,4 +11,6 @@ public interface PlaceOrderService {
     OrderDTO searchOrder(String oid);
     List<OrderDTO> getAllOrders();
     String generateOrderId();
+    int countOrders();
+    double calculateIncome();
 }

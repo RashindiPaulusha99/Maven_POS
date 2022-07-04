@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString
 @Entity
 public class Orders {
 
@@ -28,15 +29,4 @@ public class Orders {
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetails;
 
-    @Override
-    public String toString() {
-        return "Orders{" +
-                "orderId='" + orderId + '\'' +
-                ", orderDate=" + orderDate +
-                ", grossTotal=" + grossTotal +
-                ", netTotal=" + netTotal +
-                ", customer=" + customer +
-                ", orderDetails=" + orderDetails +
-                '}';
-    }
 }

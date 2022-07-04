@@ -8,4 +8,7 @@ public interface ItemRepo extends JpaRepository<Item, String> {
 
     @Query(value = "SELECT itemCode FROM Item ORDER BY itemCode DESC LIMIT 1", nativeQuery = true)
     String generateItemCode();
+
+    @Query(value = "SELECT COUNT(*) FROM Item", nativeQuery = true)
+    int countCodes();
 }

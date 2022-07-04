@@ -30,6 +30,7 @@ public class PlaceOrderController {
 
     @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil searchOrder(@PathVariable String id){
+        System.out.println(id);
         return new ResponseUtil(200, "Ok.",placeOrderService.searchOrder(id));
     }
 
@@ -48,6 +49,16 @@ public class PlaceOrderController {
     @GetMapping(params = {"test"})
     public ResponseUtil generateOrderId(@RequestParam String test) {
         return new ResponseUtil(200, "Ok", placeOrderService.generateOrderId());
+    }
+
+    @GetMapping(path ="/COUNT/{count}")
+    public ResponseUtil countOrders(@PathVariable String count){
+        return new ResponseUtil(200, "Ök", placeOrderService.countOrders());
+    }
+
+    @GetMapping(path = "/INCOME/{income}")
+    public ResponseUtil calculateIncome(@PathVariable String income){
+        return new ResponseUtil(200, "Ok", placeOrderService.calculateIncome());
     }
 
 }

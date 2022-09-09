@@ -20,6 +20,8 @@
         </plugins>
     </build>
     <packaging>war</packaging>
+    <name>FileUpload</name>
+    <description>This is for demonstrate how to upload files using Spring MVC</description>
 
     <properties>
         <maven class="compiler source">8</maven>

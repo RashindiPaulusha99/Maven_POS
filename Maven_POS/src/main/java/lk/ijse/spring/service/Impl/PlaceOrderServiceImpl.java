@@ -32,7 +32,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
     @Autowired
     private ModelMapper modelMapper;
 
-
     @Override
     public void placeOrder(OrderDTO orderDTO) {
 
@@ -74,7 +73,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
     public OrderDTO searchOrder(String oid) {
         if (orderRepo.existsById(oid)){
             Orders order = orderRepo.findById(oid).get();
-            System.out.println(order);
             return modelMapper.map(order, OrderDTO.class);
         }else {
             throw new RuntimeException(oid + " " + "No Such Order..! Please Check The OrderId..!");

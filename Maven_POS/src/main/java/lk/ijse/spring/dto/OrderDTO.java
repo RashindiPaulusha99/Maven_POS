@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-
+@ToString
 public class OrderDTO {
     private String orderId;
     private CustomerDTO customer;

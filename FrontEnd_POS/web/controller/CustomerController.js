@@ -155,9 +155,7 @@ function addCustomer() {
     let text = "Do you really want to save this Customer?";
 
     if (confirm(text) == true) {
-
         addCustomerToDB();
-
     } else {
 
     }

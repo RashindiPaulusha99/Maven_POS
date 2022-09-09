@@ -30,7 +30,6 @@ public class PlaceOrderController {
 
     @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil searchOrder(@PathVariable String id){
-        System.out.println(id);
         return new ResponseUtil(200, "Ok.",placeOrderService.searchOrder(id));
     }
 
